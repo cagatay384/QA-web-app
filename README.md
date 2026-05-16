@@ -1,5 +1,7 @@
 # Soru-Cevap Web Uygulaması
 
+![Uygulama Ekran Görüntüsü](screenshot.png)
+
 Yüklenen dosyalar (TXT, PDF, DOCX) üzerinde Türkçe soru-cevap yapabilen basit bir web uygulaması.
 
 ## Kullanılan Teknolojiler
