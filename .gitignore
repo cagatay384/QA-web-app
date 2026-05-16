@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+
+# Sanal ortamlar
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model cache (büyük dosyalar!)
+.cache/
+*.bin
+*.safetensors
+
+# Yüklenen dosyalar
+uploads/
+*.log

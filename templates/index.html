@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Soru-Cevap Uygulaması</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'SF Mono', 'Menlo', monospace;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 60px 20px;
+}
+.box {
+    margin: 0 auto;
+}
+.box {
+    background: #242424;
+    border: 1px solid #3a3a3a;
+    padding: 40px;
+    width: 100%;
+    max-width: 560px;
+}
+h1 {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #3a3a3a;
+}
+input[type="file"], input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
+    color: #e0e0e0;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+input[type="text"]::placeholder {
+    color: #555;
+}
+input[type="text"]:focus, input[type="file"]:focus {
+    border-color: #888;
+}
+button {
+    width: 100%;
+    padding: 14px;
+    background: #e0e0e0;
+    color: #1a1a1a;
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+}
+button:hover {
+    background: #fff;
+}
+button:disabled {
+    background: #444;
+    color: #888;
+    cursor: not-allowed;
+}
+#result {
+    margin-top: 25px;
+    padding: 18px;
+    background: #1a1a1a;
+    border-left: 2px solid #e0e0e0;
+    font-size: 13px;
+    line-height: 1.6;
+    display: none;
+}
+#result small {
+    color: #666;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>// Soru — Cevap</h1>
+        <input type="file" id="file" accept=".txt,.pdf,.docx">
+        <input type="text" id="question" placeholder="Sorunuzu yazın...">
+        <button onclick="ask()" id="btn">Cevabı Bul</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function ask() {
+            const file = document.getElementById("file").files[0];
+            const question = document.getElementById("question").value;
+            const result = document.getElementById("result");
+            const btn = document.getElementById("btn");
+
+            if (!file || !question) {
+                alert("Lütfen dosya yükleyin ve soru yazın.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Düşünüyor...";
+            result.style.display = "none";
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("question", question);
+
+            const response = await fetch("/ask", { method: "POST", body: formData });
+            const data = await response.json();
+
+            result.style.display = "block";
+            result.innerHTML = "<b>Cevap:</b> " + data.answer +
+                (data.score ? "<br><small>Güven: " + data.score + "</small>" : "");
+
+            btn.disabled = false;
+            btn.textContent = "Cevabı Bul";
+        }
+    </script>
+</body>
+</html>
